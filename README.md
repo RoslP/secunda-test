@@ -17,6 +17,10 @@
 
     php artisan migrate
 
+    3.2)Запустить сидер
+    
+    php artisan migrate --seed
+
     4)api доступно по localhost:80
 
     PS)если будут проблемы с записью/чтением от рута зайти и сделать 
