@@ -1,12 +1,15 @@
 #### Запуск 
     1)запустить контейнеры docker-compose up -d --build
-    2)зайти в контейнер php выполнить команды:
+    2)зайти в контейнер php
+      docker exec -it php-laravel bash
+      
+        выполнить команды:
 
          php artisan key:generate  
 
          .env.example сделать в .env внести тутда с заменой строки
     
-    3)выполнить миграции 
+    3)выполнить миграции
 
     php artisan migrate
 
