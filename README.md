@@ -5,13 +5,6 @@
          php artisan key:generate  
 
          .env.example сделать в .env внести тутда с заменой строки
-
-            DB_CONNECTION=mysql
-            DB_HOST=db
-            DB_PORT=3306
-            DB_DATABASE=laravel
-            DB_USERNAME=laravel
-            DB_PASSWORD=laravel
     
     3)выполнить миграции 
 

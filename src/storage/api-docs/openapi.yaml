@@ -1,0 +1,206 @@
+openapi: 3.0.0
+info:
+  title: Organizations API
+  version: 1.0.0
+servers:
+  - url: http://localhost:80/api
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-KEY
+security:
+  - ApiKeyAuth: []
+paths:
+  /organizations/{id}:
+    get:
+      summary: Получить информацию об организации по ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+        '404':
+          description: Not found
+      security:
+        - ApiKeyAuth: []
+  /organizations:
+    get:
+      summary: Список организаций по building_id
+      parameters:
+        - name: building_id
+          in: query
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: building_id required
+      security:
+        - ApiKeyAuth: []
+  /organizations/by-activity/{activityId}:
+    get:
+      summary: Список организаций по виду деятельности
+      parameters:
+        - name: activityId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+      security:
+        - ApiKeyAuth: []
+  /organizations/search-by-activity/{activityId}:
+    get:
+      summary: Список организаций по виду деятельности и вложенным (до 3 уровней)
+      parameters:
+        - name: activityId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+        '404':
+          description: Activity not found
+      security:
+        - ApiKeyAuth: []
+  /organizations/search-name:
+    get:
+      summary: Поиск организаций по названию
+      parameters:
+        - name: name
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+      security:
+        - ApiKeyAuth: []
+  /organizations/nearby:
+    get:
+      summary: Список организаций в радиусе от точки
+      parameters:
+        - name: lat
+          in: query
+          required: true
+          schema:
+            type: number
+            format: float
+        - name: lng
+          in: query
+          required: true
+          schema:
+            type: number
+            format: float
+        - name: radius_km
+          in: query
+          required: false
+          schema:
+            type: number
+            default: 1
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: lat and lng required
+      security:
+        - ApiKeyAuth: []
+  /organizations/in-rect:
+    get:
+      summary: Список организаций в прямоугольной области
+      parameters:
+        - name: min_lat
+          in: query
+          required: true
+          schema:
+            type: number
+            format: float
+        - name: max_lat
+          in: query
+          required: true
+          schema:
+            type: number
+            format: float
+        - name: min_lng
+          in: query
+          required: true
+          schema:
+            type: number
+            format: float
+        - name: max_lng
+          in: query
+          required: true
+          schema:
+            type: number
+            format: float
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: min_lat,max_lat,min_lng,max_lng required
+      security:
+        - ApiKeyAuth: []
+  /buildings:
+    get:
+      summary: Список всех зданий
+      responses:
+        '200':
+          description: OK
+      security:
+        - ApiKeyAuth: []
+  /buildings/{id}:
+    get:
+      summary: Информация о здании по ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+      security:
+        - ApiKeyAuth: []
+  /activities:
+    get:
+      summary: Список видов деятельности
+      responses:
+        '200':
+          description: OK
+      security:
+        - ApiKeyAuth: []
+    post:
+      summary: Создание нового вида деятельности (максимум 3 уровня)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                parent_id:
+                  type: integer
+                  nullable: true
+      responses:
+        '201':
+          description: Created
+        '422':
+          description: Max activity nesting level exceeded
+      security:
+        - ApiKeyAuth: []
